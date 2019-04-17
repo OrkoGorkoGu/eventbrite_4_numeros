@@ -3,4 +3,4 @@ python:
   - "3.6"
 
 script: 
-  - python3 juego_testing.py
+  - python3 test_4_numeros.py
