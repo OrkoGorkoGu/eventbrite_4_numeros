@@ -12,16 +12,18 @@ def shuffle_numero(num, digits):
     
     # Two digit sort
     if len(dig) == 2:
-        tmp = dig[0]
+        t0 = l[int(dig[0])]
         l[int(dig[0])] = l[int(dig[-1])]
-        l[int(dig[-1])] = tmp
+        l[int(dig[-1])] = t0
     
     # Three digit sort
     elif len(dig) == 3:
-        pass
-        tmp = dig[-1]
-        dig.remove(tmp)
-        dig.insert(0, tmp)
+        t0 = l[int(dig[0])]
+        t1 = l[int(dig[1])]
+
+        l[int(dig[0])] = l[int(dig[-1])]
+        l[int(dig[1])] = t0
+        l[int(dig[2])] = t1
         
     for d in l:
         x += s[int(d)]
