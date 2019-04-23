@@ -1,3 +1,4 @@
+from unittest.mock import patch
 import unittest
 import juego_4_numeros as Juego
 
@@ -58,6 +59,41 @@ class TestGuessOutcomes(unittest.TestCase):
     def test_4b_0r(self):
         result = Juego.match('1234', '1234')
         self.assertEqual(result, [4, 0])
+
+class TestFunctions(unittest.TestCase):
+    def test_generar_numero(self):
+        dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+        result = Juego.generar_numero(dig_list)
+
+        # Ensure generated number is in the correct range
+        self.assertLessEqual(int(result), 9876)
+        self.assertGreaterEqual(int(result), 1234)
+
+        # Ensure generated number has no repeated digits
+        self.assertTrue(len(str(result)) == len(set(str(result))))
+    
+    def test_verify_numero_too_small(self):
+        result = Juego.verify_numero('0123')
+        self.assertEqual(result, False)
+    
+    def test_verify_numero_not_unique(self):
+        result = Juego.verify_numero('9987')
+        self.assertEqual(result, False)
+
+class TestGamePlay(unittest.TestCase):
+    def test_give_user_feedback(self):
+        result = Juego.give_user_feedback('1234', '4839')
+        self.assertEqual(result, [1,1])
+    
+    def test_get_user_feedback(self):
+        with patch('juego_4_numeros.input', side_effect=['2', '1']):
+            result = Juego.get_user_feedback('1245')
+            self.assertEqual(result, [2,1])
+
+    def test_player_guess(self):
+        with patch('juego_4_numeros.input', return_value='1234'):
+            pass
+    
 
 if __name__ == "__main__":
     unittest.main()
