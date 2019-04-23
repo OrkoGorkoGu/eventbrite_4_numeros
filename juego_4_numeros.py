@@ -3,6 +3,32 @@ import random
 def output(text):
     print(text)
 
+def shuffle_numero(num, digits):
+    s = str(num)
+    x = ''
+    l = ['0', '1', '2', '3']
+
+    dig = digits.split(',')    
+    
+    # Two digit sort
+    if len(dig) == 2:
+        tmp = dig[0]
+        l[int(dig[0])] = l[int(dig[-1])]
+        l[int(dig[-1])] = tmp
+    
+    # Three digit sort
+    elif len(dig) == 3:
+        pass
+        tmp = dig[-1]
+        dig.remove(tmp)
+        dig.insert(0, tmp)
+        
+    for d in l:
+        x += s[int(d)]
+
+    return int(x)
+
+
 def match(x, y):
     # Compares two numbers, given as strings
     # Returns array with number of correct and regular digits
@@ -97,29 +123,34 @@ def player_guess():
 def computer_guess():
     # User thinks of number
     s = "Think of a four-digit number"
+
+    output(s)
     dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
     
     # Loop until computer guesses number
     while True:
         # Computer makes a guess
-        guess = generar_numero(dig_list)
+        guess = generar_numero(dig_list.copy())
 
         # Get user feedback
         fb = get_user_feedback(guess)
 
         # Update arrays based on user feedback
         if fb == [0,0]:
+            # No numbers are regular, so none will be used
             for i in str(guess):
                 dig_list.remove(i)
         elif fb == [4,0]:
             # Computer guessed number
-            output("Thanks for playing")
+            output("Thanks for playing!")
             break
-
+        else:
+            # Do tHe AlGoRitHm
+            pass
 
 
 def main():
-    #player_guess()
+    player_guess()
 
     computer_guess()
 
