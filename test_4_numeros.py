@@ -144,7 +144,6 @@ class TestGamePlay(unittest.TestCase):
             Juego.player_guess()
             self.assertEqual(self.output_collector.output_collector[-1], "You Win!")
     
-    #@unittest.skip
     def test_player_guess_not_win(self):
         self.output_collector = OutputCollector()
         with \
@@ -165,4 +164,3 @@ class TestGamePlay(unittest.TestCase):
             
 if __name__ == "__main__":
     unittest.main()
-    
