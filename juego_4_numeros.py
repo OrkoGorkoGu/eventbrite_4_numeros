@@ -103,14 +103,10 @@ def computer_guess():
     output(s)
 
     dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-    guess = 1234
-    fb = [0,0]
+    guess = 1023
 
     # Loop until computer guesses number
     while True:
-        # Use Algorithm to generate number
-        guess = progress_algorithm(guess, fb[0], dig_list.copy())
-
         # Get user feedback
         fb = get_user_feedback(guess)
 
@@ -120,13 +116,16 @@ def computer_guess():
             for i in str(guess):
                 dig_list.remove(i)
             
-        elif fb == [4,0]:
+        elif fb[0] == 4:
             # Computer guessed number
             output("Thanks for playing!")
             break
+        
+        # Use Algorithm to generate number
+        guess = progress_algorithm(guess, fb[0], dig_list.copy())
             
 def main():
-    player_guess()
+    #player_guess()
 
     computer_guess()
 
