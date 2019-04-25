@@ -3,34 +3,6 @@ import random
 def output(text):
     print(text)
 
-def shuffle_numero(num, digits):
-    s = str(num)
-    x = ''
-    l = ['0', '1', '2', '3']
-
-    dig = digits.split(',')    
-    
-    # Two digit sort
-    if len(dig) == 2:
-        t0 = l[int(dig[0])]
-        l[int(dig[0])] = l[int(dig[-1])]
-        l[int(dig[-1])] = t0
-    
-    # Three digit sort
-    elif len(dig) == 3:
-        t0 = l[int(dig[0])]
-        t1 = l[int(dig[1])]
-
-        l[int(dig[0])] = l[int(dig[-1])]
-        l[int(dig[1])] = t0
-        l[int(dig[2])] = t1
-        
-    for d in l:
-        x += s[int(d)]
-
-    return int(x)
-
-
 def match(x, y):
     # Compares two numbers, given as strings
     # Returns array with number of correct and regular digits
@@ -45,6 +17,24 @@ def match(x, y):
     
     return [bien, reg]
 
+def progress_algorithm(num, bien, dig_list):
+    x = num
+    while True:
+        cont_guessing = False
+        x += 1
+        if verify_numero(x):
+            # Number is valid
+            for dig in str(x):
+                if dig not in dig_list:
+                    # One of digit in x not found in dig_list
+                    cont_guessing = True
+
+            if not cont_guessing:
+                # No unnecessary digits used
+                if match(num, x)[0] == bien:
+                    # this is an okay guess                    
+                    return x
+
 def verify_numero(num):
     # Make sure number is in range:
     if int(num) < 1234:
@@ -54,15 +44,7 @@ def verify_numero(num):
     if len(str(num)) != len(set(str(num))):
         return False
 
-    return True    
-
-def generar_guess(dig1, dig2, dig3, dig4):
-    num = ''
-    num += dig1[random.randint(0, len(dig1) - 1)]
-    num += dig2[random.randint(0, len(dig2) - 1)]
-    num += dig3[random.randint(0, len(dig3) - 1)]
-    num += dig4[random.randint(0, len(dig4) - 1)]
-    return int(num)
+    return True
 
 def generar_numero(dig_list):
     # Generate number for user to guess
@@ -122,17 +104,23 @@ def player_guess():
             # User Guessed number
             output("You Win!")
             break
+
 def computer_guess():
     # User thinks of number
     s = "Think of a four-digit number"
 
     output(s)
     dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-    
+    guess = 1234
+
     # Loop until computer guesses number
     while True:
+        # User the 'Progress bien' algorithm
+        
+
+
         # Computer makes a guess
-        guess = generar_numero(dig_list.copy())
+        # guess = generar_numero(dig_list.copy())
 
         # Get user feedback
         fb = get_user_feedback(guess)
@@ -142,15 +130,15 @@ def computer_guess():
             # No numbers are regular, so none will be used
             for i in str(guess):
                 dig_list.remove(i)
+            
         elif fb == [4,0]:
             # Computer guessed number
             output("Thanks for playing!")
             break
-        else:
-            # Do tHe AlGoRitHm
-            pass
 
-
+        # Do tHe AlGoRitHm
+        guess = progress_algorithm(guess, fb[0], dig_list.copy())
+            
 def main():
     player_guess()
 
