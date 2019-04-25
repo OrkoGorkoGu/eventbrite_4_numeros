@@ -35,16 +35,9 @@ def progress_algorithm(num, bien, dig_list):
                     # this is an okay guess                    
                     return x
 
-def verify_numero(num):
-    # Make sure number is in range:
-    if int(num) < 1234:
-        return False
-    
+def verify_numero(num):    
     # Make sure number has no repeated digits
-    if len(str(num)) != len(set(str(num))):
-        return False
-
-    return True
+    return len(str(int(num))) == len(set(str(int(num)))) == 4
 
 def generar_numero(dig_list):
     # Generate number for user to guess
@@ -92,9 +85,8 @@ def player_guess():
         # Ask user to make a guess
         s = "Enter a four-digit guess:"
         
-        while True:
-            output(s)
-            guess = input()
+        while True:            
+            guess = input(s)
             if verify_numero(guess):
                 break
 
@@ -108,19 +100,16 @@ def player_guess():
 def computer_guess():
     # User thinks of number
     s = "Think of a four-digit number"
-
     output(s)
+
     dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
     guess = 1234
+    fb = [0,0]
 
     # Loop until computer guesses number
     while True:
-        # User the 'Progress bien' algorithm
-        
-
-
-        # Computer makes a guess
-        # guess = generar_numero(dig_list.copy())
+        # Use Algorithm to generate number
+        guess = progress_algorithm(guess, fb[0], dig_list.copy())
 
         # Get user feedback
         fb = get_user_feedback(guess)
@@ -135,9 +124,6 @@ def computer_guess():
             # Computer guessed number
             output("Thanks for playing!")
             break
-
-        # Do tHe AlGoRitHm
-        guess = progress_algorithm(guess, fb[0], dig_list.copy())
             
 def main():
     player_guess()

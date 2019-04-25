@@ -22,7 +22,10 @@ class ControlInputValues(list):
             ]
         else:
             # Player is guessing
-            pass
+            inputs = [
+                '1235',
+                '1234'
+            ]
         
         self.prompts += 1
         return inputs[self.prompts - 1]
@@ -107,17 +110,12 @@ class TestAlgorithmProgression(unittest.TestCase):
         
 
 class TestNumberFunctions(unittest.TestCase):
-
     def test_generar_numero(self):        
         dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
         result = Juego.generar_numero(dig_list)
 
-        # Ensure generated number is in the correct range
-        self.assertLessEqual(int(result), 9876)
-        self.assertGreaterEqual(int(result), 1234)
-
         # Ensure generated number has no repeated digits
-        self.assertTrue(len(str(result)) == len(set(str(result))))
+        self.assertTrue(len(str(result)) == len(set(str(result))) == 4)
         
     def test_verify_numero_too_small(self):
         result = Juego.verify_numero('0123')
@@ -145,6 +143,16 @@ class TestGamePlay(unittest.TestCase):
                 patch('juego_4_numeros.generar_numero', return_value='1234'):
             Juego.player_guess()
             self.assertEqual(self.output_collector.output_collector[-1], "You Win!")
+    
+    #@unittest.skip
+    def test_player_guess_not_win(self):
+        self.output_collector = OutputCollector()
+        with \
+                patch('juego_4_numeros.output', side_effect=self.output_collector), \
+                patch('juego_4_numeros.generar_numero', return_value='1234'), \
+                patch('juego_4_numeros.input', side_effect=ControlInputValues()):
+            Juego.player_guess()
+            self.assertEqual(self.output_collector.output_collector[0], "Bien: 3\nRegular: 0")
     
     def test_computer_guess_win(self):
         self.output_collector = OutputCollector()
