@@ -70,64 +70,72 @@ def get_user_feedback(guess):
     reg = int(input("Cuántos son regulares?"))
     return [bien, reg]
 
-def player_guess():
-    # PC Generates number
-    dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+class Game():
+    def __init__(self):
+        self.is_playing = True
+        self.dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
-    # Make sure the guess is good:
-    while True:
-        num = generar_numero(dig_list)
-        if verify_numero(num):
-            break
+class PlayerGuess(Game):
+    def __init__(self):
+        Game.__init__(self)
+        # Ensure the num is good:
+        while True:
+            self.num = generar_numero(self.dig_list)
+            if verify_numero(self.num):
+                break
 
-    # Loop until user guesses number
-    while True:
+    def user_input(self):
         # Ask user to make a guess
         s = "Enter a four-digit guess:"
-        
+
         while True:            
             guess = input(s)
             if verify_numero(guess):
                 break
+        return guess
 
-        give_user_feedback(num, guess)
+    def turn(self):
+        guess = self.user_input()
 
-        if match(num, guess) == [4,0]:
+        give_user_feedback(self.num, guess)
+
+        if match(self.num, guess) == [4,0]:
             # User Guessed number
             output("You Win!")
-            break
+            self.is_playing = False
 
-def computer_guess():
-    # User thinks of number
-    s = "Think of a four-digit number"
-    output(s)
+class ComputerGuess(Game):
+    def __init__(self):
+        Game.__init__(self)
+        # User thinks of number
+        s = "Think of a four-digit number"
+        output(s)
 
-    dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-    guess = 1023
-
-    # Loop until computer guesses number
-    while True:
+        self.guess = 1023
+    
+    def turn(self):
         # Get user feedback
-        fb = get_user_feedback(guess)
+        fb = get_user_feedback(self.guess)
 
         # Update arrays based on user feedback
         if fb == [0,0]:
             # No numbers are regular, so none will be used
-            for i in str(guess):
-                dig_list.remove(i)
+            for i in str(self.guess):
+                self.dig_list.remove(i)
             
         elif fb[0] == 4:
             # Computer guessed number
             output("Thanks for playing!")
-            break
-        
-        # Use Algorithm to generate number
-        guess = progress_algorithm(guess, fb[0], dig_list.copy())
+            self.is_playing = False
             
+        # Use Algorithm to generate number
+        if self.is_playing:
+            self.guess = progress_algorithm(self.guess, fb[0], self.dig_list.copy())
+
 def main():
-    #player_guess()
-
-    computer_guess()
-
+    game = ComputerGuess()
+    while game.is_playing:
+        game.turn()
+    
 if __name__=="__main__":
     main()

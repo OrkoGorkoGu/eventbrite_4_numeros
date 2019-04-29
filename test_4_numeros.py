@@ -30,7 +30,6 @@ class ControlInputValues(list):
         self.prompts += 1
         return inputs[self.prompts - 1]
 
-
 class TestMatchOutcomes(unittest.TestCase):
     # Test that each of the match combinations work correctly
     def test_match_0b_0r(self):
@@ -139,27 +138,33 @@ class TestGamePlay(unittest.TestCase):
         self.output_collector = OutputCollector()
         with \
                 patch('juego_4_numeros.input', return_value='1234'), \
-                patch('juego_4_numeros.output', side_effect=self.output_collector), \
-                patch('juego_4_numeros.generar_numero', return_value='1234'):
-            Juego.player_guess()
+                patch('juego_4_numeros.output', side_effect=self.output_collector):
+            game = Juego.PlayerGuess()
+            game.num = 1234
+            while game.is_playing:
+                game.turn()
             self.assertEqual(self.output_collector.output_collector[-1], "You Win!")
     
     def test_player_guess_not_win(self):
         self.output_collector = OutputCollector()
         with \
                 patch('juego_4_numeros.output', side_effect=self.output_collector), \
-                patch('juego_4_numeros.generar_numero', return_value='1234'), \
                 patch('juego_4_numeros.input', side_effect=ControlInputValues()):
-            Juego.player_guess()
+            game = Juego.PlayerGuess()
+            game.num = 1234
+            while game.is_playing:
+                game.turn()
             self.assertEqual(self.output_collector.output_collector[0], "Bien: 3\nRegular: 0")
     
     def test_computer_guess_win(self):
         self.output_collector = OutputCollector()
         with \
                 patch('juego_4_numeros.output', side_effect=self.output_collector), \
-                patch('juego_4_numeros.generar_numero', return_value='1234'), \
                 patch('juego_4_numeros.input', side_effect=ControlInputValues()):
-            Juego.computer_guess()
+            game = Juego.ComputerGuess()
+            game.guess = 1234
+            while game.is_playing:
+                game.turn()
             self.assertEqual(self.output_collector.output_collector[-1], "Thanks for playing!")
             
 if __name__ == "__main__":
