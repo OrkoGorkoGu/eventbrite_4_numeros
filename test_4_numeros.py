@@ -119,17 +119,17 @@ class TestAlgorithmProgression(unittest.TestCase):
     def test_progress_algorithm_1b_0r(self):
         fbList = [[1,0], [1,0]]
         result = Juego.progress_algorithm(self.guessList, fbList)
-        self.assertEqual(result, 1506)
+        self.assertEqual(result, 1056)
     
     def test_progress_algorithm_1b_1r(self):
         fbList = [[1,1], [1,1]]
         result = Juego.progress_algorithm(self.guessList, fbList)
-        self.assertEqual(result, 1305)
+        self.assertEqual(result, 1025)
     
     def test_progress_algorithm_1b_2r(self):
         fbList = [[1,2], [1,2]]
         result = Juego.progress_algorithm(self.guessList, fbList)
-        self.assertEqual(result, 1302)
+        self.assertEqual(result, 1023)
     
     def test_progress_algorithm_1b_3r(self):
         fbList = [[1,3], [1,3]]
@@ -139,12 +139,12 @@ class TestAlgorithmProgression(unittest.TestCase):
     def test_progress_algorithm_2b_0r(self):
         fbList = [[2,0], [2,0]]
         result = Juego.progress_algorithm(self.guessList, fbList)
-        self.assertEqual(result, 1250)
+        self.assertEqual(result, 1035)
     
     def test_progress_algorithm_2b_1r(self):
         fbList = [[2,1], [2,1]]
         result = Juego.progress_algorithm(self.guessList, fbList)
-        self.assertEqual(result, 1240)
+        self.assertEqual(result, 1024)
     
     def test_progress_algorithm_2b_2r(self):
         fbList = [[2,2], [2,2]]
@@ -154,7 +154,7 @@ class TestAlgorithmProgression(unittest.TestCase):
     def test_progress_algorithm_3b_0r(self):
         fbList = [[3,0], [3,0]]
         result = Juego.progress_algorithm(self.guessList, fbList)
-        self.assertEqual(result, 1235)
+        self.assertEqual(result, 1034)
     
 class TestNumberFunctions(unittest.TestCase):
     def test_generar_numero(self):        

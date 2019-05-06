@@ -42,7 +42,7 @@ def progress_algorithm(guessList, fbList):
                     return cand
 
 def verify_numero(num):   
-    # Make sure number has no repeated digits
+    # Make sure number has no repeated digits and is four digits
     return len(str(int(num))) == len(set(str(int(num)))) == 4
 
 def generar_numero():
