@@ -89,29 +89,76 @@ class TestMatchOutcomes(unittest.TestCase):
         self.assertEqual(result, [4, 0])
 
 class TestAlgorithmProgression(unittest.TestCase):
-    dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+    guessList = [1234, 1234]
 
-    def test_progress_algorithm_0b(self):
-        result = Juego.progress_algorithm(1234, 0, self.dig_list)
+    def test_progress_algorithm_0b_0r(self):
+        fbList = [[0,0], [0,0]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 5067)
+    
+    def test_progress_algorithm_0b_1r(self):
+        fbList = [[0,1], [0,1]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 2056)
+    
+    def test_progress_algorithm_0b_2r(self):
+        fbList = [[0,2], [0,2]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 2015)
+    
+    def test_progress_algorithm_0b_3r(self):
+        fbList = [[0,3], [0,3]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
         self.assertEqual(result, 2013)
-
-    def test_progress_algorithm_1b(self):
-        result = Juego.progress_algorithm(1234, 1, self.dig_list)
+    
+    def test_progress_algorithm_0b_4r(self):
+        fbList = [[0,4], [0,4]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 2143)
+    
+    def test_progress_algorithm_1b_0r(self):
+        fbList = [[1,0], [1,0]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 1506)
+    
+    def test_progress_algorithm_1b_1r(self):
+        fbList = [[1,1], [1,1]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 1305)
+    
+    def test_progress_algorithm_1b_2r(self):
+        fbList = [[1,2], [1,2]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
         self.assertEqual(result, 1302)
     
-    def test_progress_algorithm_2b(self):
-        result = Juego.progress_algorithm(1234, 2, self.dig_list)
+    def test_progress_algorithm_1b_3r(self):
+        fbList = [[1,3], [1,3]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 1342)
+    
+    def test_progress_algorithm_2b_0r(self):
+        fbList = [[2,0], [2,0]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 1250)
+    
+    def test_progress_algorithm_2b_1r(self):
+        fbList = [[2,1], [2,1]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
         self.assertEqual(result, 1240)
     
-    def test_progress_algorithm_3b(self):
-        result = Juego.progress_algorithm(1234,3, self.dig_list)
+    def test_progress_algorithm_2b_2r(self):
+        fbList = [[2,2], [2,2]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
+        self.assertEqual(result, 1243)
+    
+    def test_progress_algorithm_3b_0r(self):
+        fbList = [[3,0], [3,0]]
+        result = Juego.progress_algorithm(self.guessList, fbList)
         self.assertEqual(result, 1235)
-        
-
+    
 class TestNumberFunctions(unittest.TestCase):
     def test_generar_numero(self):        
-        dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-        result = Juego.generar_numero(dig_list)
+        result = Juego.generar_numero()
 
         # Ensure generated number has no repeated digits
         self.assertTrue(len(str(result)) == len(set(str(result))) == 4)

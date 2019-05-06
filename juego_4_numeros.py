@@ -17,30 +17,37 @@ def match(x, y):
     
     return [bien, reg]
 
-def progress_algorithm(num, bien, dig_list):
-    x = num
+def progress_algorithm(guessList, fbList):    
+    # set candidate to previous guess
+    cand = 0
+
     while True:
-        cont_guessing = False
-        x += 1
-        if verify_numero(x):
+        cand += 1
+        if verify_numero(cand):
             # Number is valid
-            for dig in str(x):
-                if dig not in dig_list:
-                    # One of digit in x not found in dig_list
-                    cont_guessing = True
+            if len(guessList) == 1:
+                # llegamos a la segunda adivinanza
+                while True:
+                    cand += 1
+                    if match(cand, guessList[0]) == [0,0] and verify_numero(cand):
+                        return cand
+            
+            for idx in range(len(guessList)):
+                # Compare with feedbacks from previous guesses too (checks validity of guess)
+                if not (match(guessList[idx], cand) == fbList[idx]):
+                    break
+                elif idx == len(guessList) - 1:
+                    # Reached end
+                    # # this is an okay guess
+                    return cand
 
-            if not cont_guessing:
-                # No unnecessary digits used
-                if match(num, x)[0] == bien:
-                    # this is an okay guess                    
-                    return x
-
-def verify_numero(num):    
+def verify_numero(num):   
     # Make sure number has no repeated digits
     return len(str(int(num))) == len(set(str(int(num)))) == 4
 
-def generar_numero(dig_list):
+def generar_numero():
     # Generate number for user to guess
+    dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
     num = ''
 
     for i in range(4):
@@ -72,15 +79,14 @@ def get_user_feedback(guess):
 
 class Game():
     def __init__(self):
-        self.is_playing = True
-        self.dig_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+        self.is_playing = True       
 
 class PlayerGuess(Game):
     def __init__(self):
         Game.__init__(self)
         # Ensure the num is good:
         while True:
-            self.num = generar_numero(self.dig_list)
+            self.num = generar_numero()
             if verify_numero(self.num):
                 break
 
@@ -112,28 +118,30 @@ class ComputerGuess(Game):
         output(s)
 
         self.guess = 1023
+        self.guessList = []
+        self.fbList = []
     
     def turn(self):
         # Get user feedback
         fb = get_user_feedback(self.guess)
+        self.guessList.append(self.guess)
+        self.fbList.append(fb)
 
-        # Update arrays based on user feedback
-        if fb == [0,0]:
-            # No numbers are regular, so none will be used
-            for i in str(self.guess):
-                self.dig_list.remove(i)
-            
-        elif fb[0] == 4:
+        if fb[0] == 4:
             # Computer guessed number
             output("Thanks for playing!")
             self.is_playing = False
-            
+        
         # Use Algorithm to generate number
         if self.is_playing:
-            self.guess = progress_algorithm(self.guess, fb[0], self.dig_list.copy())
-
+            self.guess = progress_algorithm(self.guessList, self.fbList)
+            
 def main():
     game = ComputerGuess()
+    while game.is_playing:
+        game.turn()
+        
+    game = PlayerGuess()
     while game.is_playing:
         game.turn()
     
